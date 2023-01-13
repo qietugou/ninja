@@ -20,7 +20,7 @@ async function getToken() {
   const qlSecret = process.env.QL_SECRET
   const token = cache.get(CACHE_TOKEN)
   if (token) {
-    console.log('走缓存了')
+    console.log(token, '走缓存了')
     return token;
   }
   const body = await api({
@@ -29,6 +29,7 @@ async function getToken() {
       Accept: 'application/json',
     },
   }).json();
+  console.log(body);
   if (body && body.code === 200) {
     //缓存十天
     cache.put(CACHE_TOKEN, body.data.token,  24 * 60 * 60 * 10 * 1000)
@@ -87,7 +88,7 @@ module.exports.updateEnv = async (cookie, eid, remarks) => {
     json: {
       name: 'JD_COOKIE',
       value: cookie,
-      _id: eid,
+      id: eid,
       remarks,
     },
     headers: {
@@ -167,7 +168,7 @@ module.exports.updateWSCKEnv = async (jdwsck, wseid, remarks) => {
     json: {
       name: 'JD_WSCK',
       value: jdwsck,
-      _id: wseid,
+      id: wseid,
       remarks,
     },
     headers: {
